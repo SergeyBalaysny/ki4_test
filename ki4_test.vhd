@@ -77,7 +77,7 @@ begin
 			p_i_diap_2 		=> '0',
 			p_i_zone_1		=> '0',
 			p_i_zone_2		=> '1',
-			p_i_reverse	 	=> '1',
+			p_i_reverse	 	=> '0',
 			p_i_main_tick	=> p_i_main_tick,
 			p_i_cnt_tick  	=> '1',
 			p_o_end_diap 	=> p_o_end_diap,

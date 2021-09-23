@@ -10,7 +10,8 @@ package parameters is
 	constant c_FREQ_LEN : natural := 47; 		-- длинна кода частоты в битах
 
 	constant  s_SPI_SPEED : natural := 10_000_000; --10_000_000; -- spi speed 
-	constant c_POW_TIME_DELAY : natural := 10_000; 		-- задержка перед выдачей команды включение при подачи питания на синтезатор или систему управления
+	constant c_POW_TIME_DELAY : natural := 1_000_000; 		-- задержка перед выдачей команды включение при подачи питания на синтезатор или систему управления
+	constant c_DELAY_AFTER_ON : natural := 50_000; -- задержка между командой на включение синтезатора и командой установки начальной частоты
 
 -- команда сброса синтезатора
 	constant c_SPI_COMMAND_RES : std_logic_vector(c_LEN downto 0) := X"3E000000000000000000000000000000";
@@ -72,66 +73,5 @@ package parameters is
 	constant c_BEGIN_FREQ_RES_1_3: std_logic_vector( 47 downto 0 ) := X"065DD0837000";		-- 7000 MHz
 	constant c_BEGIN_FREQ_RES_2: std_logic_vector( 47 downto 0 ) :=   X"04B4E6096600";		-- 5175 MHz
 	constant c_BEGIN_FREQ_RES_4: std_logic_vector( 47 downto 0 ) :=   X"042F055DB000";		-- 4600 MHz
-
-
-
--------------------------------------------------------------------------------------------------------------
---               передача данных по UART, с использованием языка SCPI
-------------------------------------------------------------------------------------------------------------
--- команда установки нового значения частоты в МГц
-	constant c_UATR_SET_NEW_FREQ_LEN : integer := 152;
-	constant c_UATR_SET_NEW_FREQ: std_logic_vector (c_UATR_SET_NEW_FREQ_LEN - 1 downto 0) := X"465245513a4357203030303030204d485a0d0a"; --FREQ:CW 00000 MHZ\r\n
-	
-
-
--- команда включения синтезатора и ее длительность
-	constant c_UART_ON : std_logic_vector(c_UATR_SET_NEW_FREQ_LEN - 1 downto 0) := X"4f555450204f4e0d0a00000000000000000000"; -- OUTP ON\r\n
-	constant c_UART_ON_LEN :  integer := 72;		   
-
--- команда выключения синтезатора и ее длительность
-	constant c_UART_OFF : std_logic_vector(c_UATR_SET_NEW_FREQ_LEN - 1 downto 0) := X"4f555450204f46460d0a000000000000000000"; -- OUTP OFF\r\n
-	constant c_UART_OFF_LEN :  integer := 80; 			
-
-
--- номер старшего бита кода частоты  в команде установки нового значения
-	constant c_UATR_SET_NEW_FREQ_BEG_FREG : integer := 87;
--- длинна поля кода частоты
-	constant c_UART_FREQ_CODE_LEN : integer := 39; 
-
-
--- приращения частот при стандартном режиме работы
-	constant c_UART_BASE_STEP_FREQ_DIAP_1_2 : integer := 1; -- MHz
-	constant c_UART_BASE_STEP_FREQ_DIAP_3_4 : integer := 2; -- MHz	
-
--- приращения частот при работе в режиме самопрогон
-	constant c_UART_CONTR_STEP_FREQ_DIAP_1_2 : integer := 32; -- MHz
-	constant c_UART_CONTR_STEP_FREQ_DIAP_3_4 : integer := 64; -- MHz	
-
--- 1 поддиапазон
-	constant c_UART_BEGIN_FREQ_DIAP_1 : integer := 6950; -- MHz
-	constant c_UART_END_FREQ_DIAP_1 : integer := 8750; -- MHz
-
--- 2 поддиапазон 
-	constant c_UART_BEGIN_FREQ_DIAP_2 : integer := 5145; -- MHz
-	constant c_UART_END_FREQ_DIAP_2 : integer := 7100; -- MHz
-
--- 3 поддипазон
-	constant c_UART_BEGIN_FREQ_DIAP_3 : integer := 6950;-- MHz
-	constant c_UART_END_FREQ_DIAP_3 : integer := 10500; -- MHz
-
--- 4 поддиапазон	
-	constant c_UART_BEGIN_FREQ_DIAP_4 : integer := 4570; -- MHz
-	constant c_UART_END_FREQ_DIAP_4 : integer := 7100; -- MHz
-
--- допуски на чатоты срабатывания контрольных резонаторов, МГц
-	
--- 1, 3 поддиапазоны
-	constant c_UART_FREQ_LIMIT_DIAP_1_3 : integer := 14; -- MHz
-	constant c_UART_FREQ_LIMIT_DIAP_2_4 : integer := 10; -- MHz
-
---  центральные частоты срабатывания контрольных резонаторов
-	constant c_UART_BEGIN_FREQ_RES_1_3 : integer := 7000; -- MHz
-	constant c_UART_BEGIN_FREQ_RES_2 : integer := 5175; -- MHz
-	constant c_UART_BEGIN_FREQ_RES_4 : integer := 4600; -- MHz
 
 end package ; -- parameters_p 

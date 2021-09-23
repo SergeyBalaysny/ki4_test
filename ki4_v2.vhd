@@ -424,10 +424,10 @@ begin
 										s_ZON2_RST_FLAG <= '0';
 										s_SPI_DATA <= c_SPI_COMMAND_ON;
 										s_SPI_DATA_LEN <= c_SPI_COMMAND_ON_LEN;
-										--s_FSM <= st_send_command;
 										s_TEMP_COUNT <= 0;
 										s_COMMAND_ON_FLAG <= '1';
-										s_FSM <= st_delay_before_on_command;
+										--s_FSM <= st_delay_before_on_command;
+										s_FSM <= st_send_command;
 
 									elsif s_MT_FLAG = '1' or s_CNT_FLAG = '1' or s_FIRST_ON_FLAG = '1' then
 										s_FIRST_ON_FLAG <= '0';
@@ -537,14 +537,14 @@ begin
 			 						end if;
 
 -- задержка перед передачей команды включения синтезатора (для того, чтоб он успел прочкхаться)
-			when st_delay_before_on_command =>	if s_TEMP_COUNT >= 500 then
-													s_TEMP_COUNT <= 0;
-													s_FSM <= st_send_command;
-												end if;
-												s_TEMP_COUNT <= s_TEMP_COUNT + 1;
+--			when st_delay_before_on_command =>	if s_TEMP_COUNT >= 500 then
+--													s_TEMP_COUNT <= 0;
+--													s_FSM <= st_send_command;
+--												end if;
+--												s_TEMP_COUNT <= s_TEMP_COUNT + 1;
 
 -- задержка между подачей комеанды на включение синтезатора и подачей кода частоты при включении
-			when st_delay_after_on_command =>	if s_TEMP_COUNT >= 500000 then
+			when st_delay_after_on_command =>	if s_TEMP_COUNT >=  c_DELAY_AFTER_ON then 
 													s_TEMP_COUNT <= 0;
 													--s_MT_FLAG <= '1';
 													s_FSM <= st_check_end_diap;
